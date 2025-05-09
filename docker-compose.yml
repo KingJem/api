@@ -1,0 +1,35 @@
+version: '3.8'
+
+
+volumes:
+  sqlserver_data:
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_ENABLE_ENCRYPTION: 0
+
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+#   api:
+#     build: .
+#     volumes:
+#       - .:/app
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - sqlserver
+#     environment:
+#       SQL_SERVER: "sqlserver"
+#       SQL_USER: "sa"
+#       SQL_PASSWORD: "YourStrong!Passw0rd"
+#       SQL_DB: "TestDB"
+#       MSSQL_ENABLE_ENCRYPTION: 0
+#

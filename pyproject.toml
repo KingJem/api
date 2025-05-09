@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "fastapi-sqlserver"
+version = "0.1.0"
+description = "FastAPI application with SQL Server integration"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.109.0"
+uvicorn = {extras = ["standard"], version = "^0.27.0"}
+pymssql = "^2.2.8"
+loguru = "^0.7.2"
+
+[tool.poetry.group.dev.dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
