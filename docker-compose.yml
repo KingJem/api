@@ -17,19 +17,3 @@ services:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
-
-#   api:
-#     build: .
-#     volumes:
-#       - .:/app
-#     ports:
-#       - "8000:8000"
-#     depends_on:
-#       - sqlserver
-#     environment:
-#       SQL_SERVER: "sqlserver"
-#       SQL_USER: "sa"
-#       SQL_PASSWORD: "YourStrong!Passw0rd"
-#       SQL_DB: "TestDB"
-#       MSSQL_ENABLE_ENCRYPTION: 0
-#

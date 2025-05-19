@@ -1,10 +1,16 @@
 import os
+import time
+import tkinter as tk
+from datetime import datetime
+from tkinter import messagebox
+
 import pymssql
 import requests
-import time
-from datetime import datetime
 ## config logger
 from loguru import logger
+
+root = tk.Tk()
+root.withdraw()
 
 # 创建日志目录（如果不存在）
 log_dir = "logs"
@@ -26,8 +32,8 @@ logger.add(
     sink=get_log_filename(),
     level="INFO",
     rotation="00:00",  # 每天午夜创建新文件
-    retention="30 days",  # 保留30天的日志
-    # compression="zip",  # 归档时压缩为zip
+    retention="90 days",  # 保留30天的日志
+    compression="zip",  # 归档时压缩为zip
     enqueue=True,  # 异步写入
     backtrace=True,  # 异常回溯
     diagnose=True  # 异常诊断信息
@@ -39,7 +45,6 @@ auth = {
     "database": os.getenv('SQL_DATABASE') or 'TestDB',
     "host": os.getenv('SQL_HOST') or 'localhost',
     "port": os.getenv('SQL_PORT') or '1433',
-
 }
 
 
@@ -62,6 +67,7 @@ def get_data(sql_query):
         return {"success": results}
     except Exception as e:
         logger.error(f"Database error: {str(e)}")
+        messagebox.showerror("连接数据失败")
         return {"error": "Database connection failed", "details": str(e)}
     finally:
         if conn:
@@ -69,6 +75,7 @@ def get_data(sql_query):
 
 
 def post_data(data):
+    messagebox.showinfo('info', "正在上传数据")
     response = requests.post("https://httpbin.org/post", data=data)
     logger.info(f"post data: {data} response: {response.json()}")
     return response.json()
@@ -76,12 +83,15 @@ def post_data(data):
 
 def main():
     start = time.time()
+    messagebox.showinfo('info', "程序开始运行")
     sql_query = "SELECT * FROM testName"
     result = get_data(sql_query)
     logger.info(f"sql query: {sql_query} result: {result}")
     post_data(result)
     spend = time.time() - start
     logger.info(f"time spend: {int(spend)} seconds")
+    messagebox.showinfo('info', "运行耗时：" + str(int(spend)) + "秒")
+    messagebox.showinfo('info', "日志信息查看：" + get_log_filename())
 
 
 if __name__ == '__main__':
