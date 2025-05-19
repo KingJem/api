@@ -66,9 +66,9 @@ def get_data(sql_query):
         results = [row for row in cursor.fetchall()]
         return {"success": results}
     except Exception as e:
-        logger.error(f"Database error: {str(e)}")
+        logger.error(f"Database connection failed: {str(e)}")
         messagebox.showerror("连接数据失败")
-        return {"error": "Database connection failed", "details": str(e)}
+        return
     finally:
         if conn:
             conn.close()
@@ -86,12 +86,14 @@ def main():
     messagebox.showinfo('info', "程序开始运行")
     sql_query = "SELECT * FROM testName"
     result = get_data(sql_query)
-    logger.info(f"sql query: {sql_query} result: {result}")
-    post_data(result)
-    spend = time.time() - start
-    logger.info(f"time spend: {int(spend)} seconds")
-    messagebox.showinfo('info', "运行耗时：" + str(int(spend)) + "秒")
-    messagebox.showinfo('info', "日志信息查看：" + get_log_filename())
+    if result:
+        logger.info(f"sql query: {sql_query} result: {result}")
+        post_data(result)
+        spend = time.time() - start
+        logger.info(f"time spend: {int(spend)} seconds")
+
+    else:
+        messagebox.showerror("连接失败，正在退出")
 
 
 if __name__ == '__main__':
