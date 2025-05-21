@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import tkinter as tk
 from datetime import datetime
@@ -11,6 +12,9 @@ from loguru import logger
 
 root = tk.Tk()
 root.withdraw()
+
+root.geometry("1920x1080")
+
 
 # 创建日志目录（如果不存在）
 log_dir = "logs"
@@ -67,7 +71,6 @@ def get_data(sql_query):
         return {"success": results}
     except Exception as e:
         logger.error(f"Database connection failed: {str(e)}")
-        messagebox.showerror("连接数据失败")
         return
     finally:
         if conn:
@@ -94,6 +97,8 @@ def main():
 
     else:
         messagebox.showerror("连接失败，正在退出")
+        root.destroy()
+        sys.exit()
 
 
 if __name__ == '__main__':
